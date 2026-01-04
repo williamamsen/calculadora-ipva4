@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de IPVA 2025/2026 – Atualizada por Estado</title>
+<meta name="description" content="Calcule o IPVA do seu carro ou moto com alíquotas atualizadas. Veja isenções, regras por estado e informações oficiais.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- AdSense (já deixa pronto) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9490701875776850"
+crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>Calculadora de IPVA</h1>
+  <nav>
+    <a href="index.html">IPVA</a>
+    <a href="cnh-categorias.html">Categorias da CNH</a>
+    <a href="como-tirar-cnh.html">Como Tirar a CNH</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="box">
+<h2>Calcule seu IPVA</h2>
+
+<label>Tipo de veículo:</label>
+<select id="tipo">
+  <option value="carro">Carro</option>
+  <option value="moto">Moto</option>
+</select>
+
+<label>Estado:</label>
+<select id="estado">
+  <option value="SP">São Paulo</option>
+  <option value="RJ">Rio de Janeiro</option>
+  <option value="MG">Minas Gerais</option>
+  <option value="PR">Paraná</option>
+</select>
+
+<label>Valor do veículo (R$):</label>
+<input type="number" id="valor" placeholder="Ex: 30000">
+
+<label>Cilindradas (somente motos):</label>
+<input type="number" id="cc" placeholder="Ex: 160">
+
+<button onclick="calcular()">Calcular IPVA</button>
+
+<p id="resultado"></p>
+</section>
+
+<section class="box">
+<h2>O que é o IPVA?</h2>
+<p>
+O IPVA (Imposto sobre a Propriedade de Veículos Automotores) é um imposto estadual
+cobrado anualmente de proprietários de veículos no Brasil. O valor do IPVA é calculado
+com base no valor venal do veículo e na alíquota definida por cada estado.
+</p>
+
+<p>
+Cada estado possui autonomia para definir suas regras, incluindo alíquotas diferentes,
+isenções e descontos. Por isso, o valor do IPVA pode variar bastante de um estado para outro.
+</p>
+</section>
+
+<section class="box">
+<h2>IPVA de Motos – Atualização Importante</h2>
+<p>
+No estado de São Paulo, motos de até <strong>180 cilindradas estão isentas de IPVA</strong>
+a partir de 2026. Essa medida beneficia milhares de trabalhadores que utilizam motocicletas
+como principal meio de transporte.
+</p>
+<p>
+Mesmo com a isenção do IPVA, o proprietário ainda deve pagar licenciamento e manter
+o veículo regularizado.
+</p>
+</section>
+
+<section class="box">
+<h2>Como é calculado o IPVA?</h2>
+<ul>
+<li>Valor venal do veículo (tabela oficial)</li>
+<li>Alíquota definida pelo estado</li>
+<li>Tipo de veículo (carro, moto, caminhão)</li>
+</ul>
+<p>
+Exemplo: um carro avaliado em R$ 40.000 em um estado com alíquota de 4% terá IPVA de R$ 1.600.
+</p>
+</section>
+
+</main>
+
+<footer>
+<p>© 2026 - Calculadora de IPVA | Conteúdo informativo</p>
+</footer>
+
+<script>
+function calcular() {
+  let tipo = document.getElementById("tipo").value;
+  let estado = document.getElementById("estado").value;
+  let valor = Number(document.getElementById("valor").value);
+  let cc = Number(document.getElementById("cc").value);
+  let aliquota = 0;
+
+  if (estado === "SP" && tipo === "moto" && cc > 0 && cc <= 180) {
+    document.getElementById("resultado").innerText =
+      "Isento de IPVA em São Paulo para motos até 180cc.";
+    return;
+  }
+
+  if (estado === "SP") aliquota = tipo === "carro" ? 0.04 : 0.02;
+  if (estado === "RJ") aliquota = tipo === "carro" ? 0.04 : 0.02;
+  if (estado === "MG") aliquota = tipo === "carro" ? 0.04 : 0.02;
+  if (estado === "PR") aliquota = 0.035;
+
+  let ipva = valor * aliquota;
+  document.getElementById("resultado").innerText =
+    "IPVA aproximado: R$ " + ipva.toFixed(2);
+}
+</script>
+
+</body>
+</html>
