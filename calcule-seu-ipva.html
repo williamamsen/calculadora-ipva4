@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Calcule seu IPVA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* Estilo extra para ícones e tabela */
+.flag {
+    width: 24px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+.result-box {
+    background: #eef9f7;
+    padding: 15px;
+    border-left: 4px solid #009c3b;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>Calcule o seu IPVA</h1>
+<nav>
+  <a href="index.html">IPVA</a>
+  <a href="calcule-seu-ipva.html">Calcular IPVA</a>
+  <a href="para-que-serve.html">Para que serve</a>
+  <a href="comparacao-internacional.html">Comparações</a>
+  <a href="comprei-veiculo.html">Comprei um veículo</a>
+  <a href="cnh-atualizada.html">CNH</a>
+</nav>
+</header>
+
+<main class="card">
+
+<label for="tipo">Tipo de veículo:</label>
+<select id="tipo">
+  <option value="carro">Carro</option>
+  <option value="moto">Moto</option>
+</select>
+
+<label for="estado">Estado:</label>
+<select id="estado">
+
+  <!-- Lista de estados com abreviação e bandeirinha -->
+  <option value="SP">🇧🇷 São Paulo</option>
+  <option value="RJ">🇧🇷 Rio de Janeiro</option>
+  <option value="MG">🇧🇷 Minas Gerais</option>
+  <option value="PR">🇧🇷 Paraná</option>
+  <option value="RS">🇧🇷 Rio Grande do Sul</option>
+  <option value="SC">🇧🇷 Santa Catarina</option>
+  <option value="BA">🇧🇷 Bahia</option>
+  <option value="PE">🇧🇷 Pernambuco</option>
+  <option value="CE">🇧🇷 Ceará</option>
+  <option value="GO">🇧🇷 Goiás</option>
+  <option value="DF">🇧🇷 Distrito Federal</option>
+  <option value="ES">🇧🇷 Espírito Santo</option>
+  <option value="MT">🇧🇷 Mato Grosso</option>
+  <option value="MS">🇧🇷 Mato Grosso do Sul</option>
+  <option value="PA">🇧🇷 Pará</option>
+  <option value="AM">🇧🇷 Amazonas</option>
+  <option value="MA">🇧🇷 Maranhão</option>
+  <option value="PB">🇧🇷 Paraíba</option>
+  <option value="RN">🇧🇷 Rio Grande do Norte</option>
+  <option value="AL">🇧🇷 Alagoas</option>
+  <option value="SE">🇧🇷 Sergipe</option>
+  <option value="PI">🇧🇷 Piauí</option>
+  <option value="TO">🇧🇷 Tocantins</option>
+  <option value="RO">🇧🇷 Rondônia</option>
+  <option value="RR">🇧🇷 Roraima</option>
+  <option value="AP">🇧🇷 Amapá</option>
+  <option value="AC">🇧🇷 Acre</option>
+
+</select>
+
+<label for="valor">Valor do veículo (R$):</label>
+<input type="number" id="valor" placeholder="Ex: 45000">
+
+<label for="cc">Cilindradas (para motos):</label>
+<input type="number" id="cc" placeholder="Ex: 160 (se for moto)">
+
+<button onclick="calcularIPVA()">Calcular</button>
+
+<div class="result-box" id="resultado"></div>
+
+</main>
+
+<footer>
+<p>Calculadora de IPVA – Guia de veículos e impostos Brasil</p>
+</footer>
+
+<script>
+const aliquotas = {
+  SP: {carro: 0.04, moto: 0.02},
+  RJ: {carro: 0.04, moto: 0.02},
+  MG: {carro: 0.04, moto: 0.02},
+  PR: {carro: 0.035, moto: 0.02},
+  RS: {carro: 0.03, moto: 0.02},
+  SC: {carro: 0.02, moto: 0.01},
+  BA: {carro: 0.025, moto: 0.015},
+  PE: {carro: 0.03, moto: 0.02},
+  CE: {carro: 0.03, moto: 0.02},
+  GO: {carro: 0.0375, moto: 0.02},
+  DF: {carro: 0.035, moto: 0.02},
+  ES: {carro: 0.02, moto: 0.01},
+  MT: {carro: 0.03, moto: 0.02},
+  MS: {carro: 0.03, moto: 0.02},
+  PA: {carro: 0.025, moto: 0.015},
+  AM: {carro: 0.03, moto: 0.02},
+  MA: {carro: 0.025, moto: 0.015},
+  PB: {carro: 0.025, moto: 0.015},
+  RN: {carro: 0.03, moto: 0.02},
+  AL: {carro: 0.03, moto: 0.02},
+  SE: {carro: 0.025, moto: 0.015},
+  PI: {carro: 0.025, moto: 0.015},
+  TO: {carro: 0.02, moto: 0.01},
+  RO: {carro: 0.03, moto: 0.02},
+  RR: {carro: 0.03, moto: 0.02},
+  AP: {carro: 0.03, moto: 0.02},
+  AC: {carro: 0.02, moto: 0.01}
+};
+
+function calcularIPVA() {
+  const tipo = document.getElementById("tipo").value;
+  const estado = document.getElementById("estado").value;
+  const valor = Number(document.getElementById("valor").value);
+  const cc = Number(document.getElementById("cc").value);
+  const res = document.getElementById("resultado");
+
+  if (!valor || valor <= 0) {
+    res.innerText = "Digite um valor de veículo válido.";
+    return;
+  }
+
+  // Exemplo: isenção moto <= 180cc em SP
+  if (estado === "SP" && tipo === "moto" && cc > 0 && cc <= 180) {
+    res.innerText = "Isento de IPVA em São Paulo para motos até 180cc.";
+    return;
+  }
+
+  const taxa = aliquotas[estado][tipo];
+  const ipva = (valor * taxa).toFixed(2);
+
+  res.innerText = `IPVA estimado: R$ ${ipva} (alíquota: ${(taxa*100).toFixed(2)}%)`;
+}
+
+</script>
+
+</body>
+</html>
